@@ -82,7 +82,6 @@ def partition_on_ring(partition_vector, recurring_states=True, max_attempts=100,
     while counter != max_attempts:
         try:
             logger.info(f"Attempt {counter + 1}")
-            print(f"Attempt {counter + 1}")
             return _partition_on_ring(partition_vector, recurring_states, anchor=anchor, anchor_atraction=anchor_atraction)
         except RuntimeError:
             counter += 1
