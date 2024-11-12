@@ -90,5 +90,5 @@ def partition_on_ring(partition_vector, recurring_states=True, max_attempts=100,
 
 if __name__ == '__main__':
     partition_vector = [1, 2, 3, 4, 5,14]
-    partitions = partition_on_ring(partition_vector,  no_recurring_states=True, max_attempts=-1)
+    partitions = partition_on_ring(partition_vector,  recurring_states=False, max_attempts=-1)
     print(partitions)
