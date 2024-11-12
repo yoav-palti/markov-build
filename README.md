@@ -1,7 +1,7 @@
 # Markov Chain Ring Construction
 
 This project provides tools for constructing Markov transition matrices with a given stationary distribution using a ring partition method.
-
+for minimal explanation see this paper [Markov Chain Ring Construction](https://doi.org/10.1080/00031305.1977.10479205)
 ## Table of Contents
 
 - [Installation](#installation)

@@ -7,7 +7,7 @@ from utils import normalize_rows
 def construct_transition_matrix_ring(stationary_distribution, N, self_loops=False, anchor=None, anchor_atraction=10):
     """
     Construct a Markov transition matrix with the given stationary distribution.
-    see: https://www.tandfonline.com/doi/pdf/10.1080/00031305.1977.10479205?casa_token=xFDNuf82eQIAAAAA:bPXUpy5az3B89yLpKyeL4Xa1srl8oxFP6OJEYsNB3SGy1MeD30Hr-YT5TrdwoABGkrNBmONaCDVua7k
+    see: https://doi.org/10.1080/00031305.1977.10479205
     for a bit more information on the method
     """
     # Normalize the probabilities to integers based on the common denominator
