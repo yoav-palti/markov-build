@@ -53,10 +53,15 @@ def _partition_on_ring(partition_vector, recurring_states=False, anchor=None, an
             partition_porbs = partition_vector
         if partition_porbs.sum() == 0:
             raise RuntimeError("The partition failed. Try again.")
+
+        # make even states more probable to be chosen after the anchor state
         if prev_chosen_state==anchor:
             partition_porbs[::2]*=anchor_atraction
-        if prev_chosen_state%2==0 and anchor is not None:
-            partition_porbs[anchor]*=anchor_atraction
+
+        # # make the anchor state more probable to be chosen after even states
+        # if prev_chosen_state%2==
+        #     partition_porbs[anchor]*=anchor_atraction
+
         partition_porbs = partition_porbs / partition_porbs.sum()
         chosen_state = rng.choice(states, p=partition_porbs)
         ring_states.append(chosen_state)

@@ -28,10 +28,16 @@ class MarkovChain:
             self._stationary_dist = stationary_dist
         return self._stationary_dist
 
-    def mutual_occurrence(self, anchor_idx):
+    def occur_after_anchor(self, anchor_idx):
         occurrence_after = self.stationary_dist[anchor_idx]*self.P[anchor_idx,:]
+        return occurrence_after
+
+    def occur_before_anchor(self, anchor_idx):
         occurrence_before = self.stationary_dist*self.P[:,anchor_idx]
-        return occurrence_after+occurrence_before
+        return occurrence_before
+
+    def neighbor_to_anchor(self, anchor_idx):
+        return self.occur_before_anchor(anchor_idx) + self.occur_after_anchor(anchor_idx)
 
     def plot(self,th=0):
         import networkx as nx
