@@ -1,11 +1,12 @@
 import numpy as np
 from utils import normalize_rows
 
-def construct_transition_matrix_converge(stationary_distribution, self_loops = False):
+def construct_transition_matrix_converge(stationary_distribution, self_loops = False, seed=None):
     n = len(stationary_distribution)
+    rng = np.random.default_rng(seed)
 
     # Step 1: Generate a random matrix with off-diagonal positive values and zero diagonal.
-    P = np.random.rand(n, n)  # Generate random values for all entries
+    P = rng.rand(n, n)  # Generate random values for all entries
     if not self_loops:
         np.fill_diagonal(P, 0)    # Set diagonal elements to 0
 

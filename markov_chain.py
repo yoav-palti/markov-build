@@ -8,11 +8,14 @@ class MarkovChain:
         self.state_map = {i: state for i, state in enumerate(states)}
         self._stationary_dist = None
 
-    def sample(self, sequence_length):
-        state_k = np.random.choice(self.n, p=self.P[0])
+    def sample(self, sequence_length, seed=None):
+        rng = np.random.default_rng(seed)
+        # get the initial state
+        state_k = rng.choice(self.n, p=self.stationary_dist)
         sequence = [self.state_map[state_k]]
+        # generate the sequence
         for _ in range(sequence_length - 1):
-            state_k = np.random.choice(self.n, p=self.P[state_k])
+            state_k = rng.choice(self.n, p=self.P[state_k])
             sequence.append(self.state_map[state_k])
         return sequence
 

@@ -1,9 +1,9 @@
 import numpy as np
 import logging
 
-logger = logging.Logger(__name__)
+logger = logging.getLogger(__name__)
 
-def _partition_on_ring(partition_vector, recurring_states=False, anchor=None, anchor_atraction=10):
+def _partition_on_ring(partition_vector, recurring_states=False, anchor=None, anchor_atraction=10, rng=None):
     """
     Partition states into subsets S_i based on the probability vector.
 
@@ -23,6 +23,9 @@ def _partition_on_ring(partition_vector, recurring_states=False, anchor=None, an
     RuntimeError
         the partition may fail if no_recurring_states is demanded
     """
+    if rng is None:
+        rng = np.random.default_rng()
+
     N = np.sum(partition_vector)
     partition_vector = np.asarray(partition_vector).copy()
     num_states = len(partition_vector)
@@ -55,23 +58,23 @@ def _partition_on_ring(partition_vector, recurring_states=False, anchor=None, an
         if prev_chosen_state%2==0 and anchor is not None:
             partition_porbs[anchor]*=anchor_atraction
         partition_porbs = partition_porbs / partition_porbs.sum()
-        chosen_state = np.random.choice(states, p=partition_porbs)
+        chosen_state = rng.choice(states, p=partition_porbs)
         ring_states.append(chosen_state)
         partition_vector[chosen_state] -= 1
     return np.asarray(ring_states)
 
-def partition_on_ring(partition_vector, recurring_states=True, max_attempts=100, anchor=None, anchor_atraction=10):
+def partition_on_ring(partition_vector, recurring_states=True, max_attempts=100, anchor=None, anchor_atraction=10, seed=None):
     """
     Partition states into subsets S_i based on the probability vector.
 
     Parameters
     ----------
     partition_vector
-    N
     recurring_states: bool
         If False, the subsets will not contain recurring states
     max_attempts: int
         Maximum number of attempts to partition the states
+        if -1 the partition will be attempted until it is successful
 
     Returns
     -------
@@ -79,10 +82,11 @@ def partition_on_ring(partition_vector, recurring_states=True, max_attempts=100,
     """
     max_attempts = int(max_attempts)
     counter = 0
+    rng = np.random.default_rng(seed)  # same rng for all attempts in order to avoid the same attempts
     while counter != max_attempts:
         try:
             logger.info(f"Attempt {counter + 1}")
-            return _partition_on_ring(partition_vector, recurring_states, anchor=anchor, anchor_atraction=anchor_atraction)
+            return _partition_on_ring(partition_vector, recurring_states, anchor=anchor, anchor_atraction=anchor_atraction, rng=rng)
         except RuntimeError:
             counter += 1
     raise RuntimeError(f"The partition failed after {max_attempts} attempts.")
